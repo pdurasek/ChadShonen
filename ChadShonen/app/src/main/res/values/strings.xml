@@ -8,4 +8,7 @@
     <string name="log_out">Log Out</string>
     <string name="create_a_new_account">Create a New Account</string>
     <string name="create_account">CREATE ACCOUNT</string>
+    <string name="login_to_your_account">Login to your Account</string>
+    <string name="login">LOGIN</string>
+    <string name="already_have_account">ALREADY HAVE ACCOUNT</string>
 </resources>
