@@ -21,16 +21,18 @@ import com.google.firebase.auth.FirebaseAuthException;
 
 public class LoginActivity extends AppCompatActivity
 {
-
+    // Toolbar
     private Toolbar mToolbar;
 
+    // UI elements
     private TextInputLayout mLoginEmail;
     private TextInputLayout mLoginPassword;
-
     private Button mLoginBtn;
 
+    // Progress Dialog
     private ProgressDialog mLoginProgress;
 
+    // Firebase Auth
     private FirebaseAuth mAuth;
     private String TAG = "LoginActivity";
 
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity
 
         mToolbar = (Toolbar) findViewById(R.id.login_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // TODO possibly handle exceptions
         getSupportActionBar().setTitle("Login");
 
         mLoginProgress = new ProgressDialog(this);
@@ -58,10 +60,11 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                // TODO possibly handle exceptions
                 String email = mLoginEmail.getEditText().getText().toString();
                 String password = mLoginPassword.getEditText().getText().toString();
 
-                if(!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password))
+                if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password))
                 {
                     mLoginProgress.show();
                     mLoginProgress.setTitle("Logging In");
@@ -80,18 +83,27 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Try to login user with email and password
+     *
+     * @param email    user email
+     * @param password user password
+     */
     private void loginUser(String email, String password)
     {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
+                        if (!task.isSuccessful())
+                        {
                             mLoginProgress.hide();
 
                             FirebaseAuthException e = (FirebaseAuthException) task.getException();

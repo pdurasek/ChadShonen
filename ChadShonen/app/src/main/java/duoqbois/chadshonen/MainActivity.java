@@ -15,8 +15,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity
 {
 
-    private FirebaseAuth mAuth;
+    // Toolbar
     private Toolbar mToolbar;
+
+    // Firebase Auth
+    private FirebaseAuth mAuth;
     private String TAG = "FirebaseAuth";
 
     @Override
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Chad Shonen");
+        getSupportActionBar().setTitle("Chad Shonen"); // TODO possibly handle exceptions
     }
 
     @Override
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Switch to StartActivity
+     */
     private void sendToStart()
     {
         Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         super.onOptionsItemSelected(item);
-        if(item.getItemId() == R.id.main_logout_btn)
+        if (item.getItemId() == R.id.main_logout_btn)
         {
             FirebaseAuth.getInstance().signOut();
             sendToStart();

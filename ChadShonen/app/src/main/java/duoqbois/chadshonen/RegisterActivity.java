@@ -22,11 +22,13 @@ import com.google.firebase.auth.FirebaseAuthException;
 public class RegisterActivity extends AppCompatActivity
 {
 
+    // UI elements
     private TextInputLayout mDisplayName;
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
-    private Button mCreateButn;
+    private Button mCreateBtn;
 
+    // Toolbar
     private Toolbar mToolbar;
 
     // ProgressDialog
@@ -45,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity
         // Set Toolbar
         mToolbar = (Toolbar) findViewById(R.id.register_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setTitle("Create Account"); // TODO possibly handle exceptions
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         mRegProgress = new ProgressDialog(this);
@@ -54,22 +56,22 @@ public class RegisterActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
 
         // Register fields
-
         mDisplayName = (TextInputLayout) findViewById(R.id.reg_display_name);
         mEmail = (TextInputLayout) findViewById(R.id.reg_email);
         mPassword = (TextInputLayout) findViewById(R.id.reg_password);
-        mCreateButn = (Button) findViewById(R.id.reg_create_button);
+        mCreateBtn = (Button) findViewById(R.id.reg_create_button);
 
-        mCreateButn.setOnClickListener(new View.OnClickListener()
+        mCreateBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                // TODO possibly handle exceptions
                 String display_name = mDisplayName.getEditText().getText().toString();
                 String email = mEmail.getEditText().getText().toString();
                 String password = mPassword.getEditText().getText().toString();
 
-                if(TextUtils.isEmpty(display_name) || display_name.length() < 6)
+                if (TextUtils.isEmpty(display_name) || display_name.length() < 6)
                 {
                     Toast.makeText(RegisterActivity.this, "Display name must be at least 6 characters long",
                             Toast.LENGTH_LONG).show();
@@ -97,6 +99,13 @@ public class RegisterActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Try registering a new user with a display name, email and a password.
+     *
+     * @param display_name user provided display name
+     * @param email        user email
+     * @param password     user password
+     */
     private void registerUser(String display_name, String email, String password)
     {
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -114,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity
                         {
                             mRegProgress.hide();
 
+                            // TODO possibly handle exceptions
                             FirebaseAuthException e = (FirebaseAuthException) task.getException();
                             Toast.makeText(RegisterActivity.this, "Error while trying to register: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();

@@ -9,6 +9,7 @@ import android.widget.Button;
 public class StartActivity extends AppCompatActivity
 {
 
+    // UI elements
     private Button mRegBtn;
     private Button mLoginBtn;
 
