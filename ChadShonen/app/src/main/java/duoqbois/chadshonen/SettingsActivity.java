@@ -1,7 +1,10 @@
 package duoqbois.chadshonen;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,8 @@ public class SettingsActivity extends AppCompatActivity
     private CircleImageView mDisplayImage;
     private TextView mName;
     private TextView mStatus;
+    private Button mStatusBtn;
+    private Button mImageBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,6 +40,8 @@ public class SettingsActivity extends AppCompatActivity
         mDisplayImage = (CircleImageView) findViewById(R.id.settings_image);
         mName = (TextView) findViewById(R.id.settings_display_name);
         mStatus = (TextView) findViewById(R.id.settings_status);
+        mStatusBtn = (Button) findViewById(R.id.settings_status_btn);
+        mImageBtn = (Button) findViewById(R.id.settings_image_btn);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String current_uid = "";
@@ -63,6 +70,19 @@ public class SettingsActivity extends AppCompatActivity
             public void onCancelled(DatabaseError databaseError)
             {
 
+            }
+        });
+
+        mStatusBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                String status = mStatus.getText().toString();
+
+                Intent statusIntent = new Intent(SettingsActivity.this, StatusActivity.class);
+                statusIntent.putExtra("status", status);
+                startActivity(statusIntent);
             }
         });
     }
