@@ -149,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity
                             HashMap<String, String> userMap = new HashMap<>();
                             userMap.put("name", display_name);
                             userMap.put("status", "Hi there, I'm using ChadShonen");
-                            userMap.put("image", "default_image.jpg");
+                            userMap.put("image", "default_image.png");
                             userMap.put("thumb_image", "default");
 
                             myRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>()
