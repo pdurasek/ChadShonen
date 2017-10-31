@@ -1,5 +1,6 @@
 package duoqbois.chadshonen;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -40,10 +42,10 @@ public class SettingsActivity extends AppCompatActivity
     private Button mStatusBtn;
     private Button mImageBtn;
 
-    private static final int GALLERY_PIC = 1;
-
     // Firebase
     private StorageReference mImageStorage;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -80,6 +82,8 @@ public class SettingsActivity extends AppCompatActivity
 
                 mName.setText(name);
                 mStatus.setText(status);
+
+                Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
             }
 
             @Override
@@ -125,6 +129,12 @@ public class SettingsActivity extends AppCompatActivity
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK)
             {
+                mProgressDialog = new ProgressDialog(SettingsActivity.this);
+                mProgressDialog.setTitle("Uploading Profile Image");
+                mProgressDialog.setMessage("Please while the profile image is being uploaded.");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+
                 Uri resultUri = result.getUri();
 
                 StorageReference filepath = mImageStorage.child("profile_images").child(mCurrentUser.getUid() + ".jpg");
@@ -135,11 +145,23 @@ public class SettingsActivity extends AppCompatActivity
                     {
                         if(task.isSuccessful())
                         {
-                            Toast.makeText(SettingsActivity.this, "Image uploaded", Toast.LENGTH_LONG).show();
+                            String dl_url = task.getResult().getDownloadUrl().toString();
+                            mUserDatabase.child("image").setValue(dl_url).addOnCompleteListener(new OnCompleteListener<Void>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+                                    if(task.isSuccessful())
+                                    {
+                                        mProgressDialog.dismiss();
+                                    }
+                                }
+                            });
                         }
                         else
                         {
                             Toast.makeText(SettingsActivity.this, "Error while uploading the image", Toast.LENGTH_LONG).show();
+                            mProgressDialog.dismiss();
                         }
                     }
                 });
